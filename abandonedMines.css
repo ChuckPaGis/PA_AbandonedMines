@@ -1,0 +1,133 @@
+html, body {
+  height: 100%;
+  width: 96%;
+  margin: auto;
+  padding: 0;
+  background-color: #a0a0a0;
+}
+body {
+  font-family: "Century Gothic";
+  font-size: 16px;
+  color: #730000;
+}
+
+h1 {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+  font-size: 22px;
+  text-decoration: underline;
+}
+h3 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+p {
+  font-size: 18px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  margin: 20px;
+}
+
+#navList {
+  position: relative;
+  width: 100%;
+  padding-bottom: 16px;
+}
+#navList li {
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  top: 0; 
+}
+#navList li, #navList a {
+  height: 32px;
+  display: block;
+}
+#linkLegend {
+  left: 15%;
+  width: 150px;
+}
+#linkData {
+  left: 30%;
+  width: 150px;
+}
+#linkCredits {
+  left: 55%;
+  width: 150px;
+}
+#linkBack {
+  left: 75%;
+  width: 150px;
+}
+
+#container {
+  display: inline-block;
+  position: relative;
+  width: 96%;
+  margin-left: 2%;
+  border: 1px solid #ffffff;
+}
+#dummy {          /* aspect ratio */
+  margin-top: 70%;
+}
+#mapDiv {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #a6c1ff;
+} 
+
+div#legend {
+  position: relative;
+  width: 96%;
+  height: 250px;
+  margin: 20px 2%;
+}
+div#legend img#left {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10%;
+  margin-right: 32px;
+  border: 1px solid #828282;
+}
+div#legend img#right {
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px solid #828282;
+}
+
+#tblStyle {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 4px;
+  border-collapse: collapse;}
+#tblStyle th, td {
+  border: 2px solid;
+  font-size: 16px;
+  text-align: center;
+  height: 36px;}
+#tblStyle th {
+  text-align: center;
+  background-color: #000000;
+  color: #ffffff;}
+#tblStyle td {
+  text-align: center;
+  background-color: #ffffff;
+  color: #000000;
+  width: 50%;}
+
+#links {
+  text-align: center;
+  margin-bottom: 30px
+}
+#links p {
+  margin:  0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: normal;
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!--The viewport meta tag is for iOS devices-->
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+  <title>Pennsylvania Acid Mines</title>
+
+  <link rel="stylesheet" href="http://js.arcgis.com/3.15/esri/css/esri.css">
+  <link rel="stylesheet" type="text/css" href="abandonedMines.css">
+
+  <script src="http://js.arcgis.com/3.15/"></script>
+  <script>
+    var map, dynamic;
+    require([
+      "esri/map", "esri/layers/ArcGISDynamicMapServiceLayer",
+      "esri/dijit/Popup", "esri/InfoTemplate",
+      "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "dojo/_base/Color",
+      "dojo/dom-construct",
+      "dojo/domReady!"
+    ], function(
+      Map, DynamicLayer,
+      Popup, InfoTemplate,
+      SimpleFillSymbol, SimpleLineSymbol, Color,
+      domConstruct
+    ) {
+      var popupSymbol = new SimpleFillSymbol(
+        SimpleFillSymbol.STYLE_SOLID,
+        new SimpleLineSymbol(
+          SimpleLineSymbol.STYLE_SOLID,
+          new Color([255,0,0,1.0]),
+          2
+        ),
+      	new Color([0,0,0,0.0])
+      );
+
+      var popup = Popup({
+        titleInBody: false,
+        fillSymbol: popupSymbol
+      },domConstruct.create("div"));
+
+      map = new Map("mapDiv", {
+        basemap: "topo",
+        infoWindow: popup,
+        center: [-77.6, 41.0],
+        zoom: 8
+      });
+
+      // Use ImageParameters to set visible map service layers during DynamicLayer construction.
+      var imageParameters = new esri.layers.ImageParameters();
+        imageParameters.layerIds = [0,1];
+        imageParameters.layerOption = esri.layers.ImageParameters.LAYER_OPTION_SHOW;
+
+      var amContent = "Has ${AMLtotal} total abandoned mines, as follows:";
+        amContent += "<br /> ${AMLimpact_Envtal} mines with environmental impacts";
+        amContent += "<br /> ${AMLimpact_ExtremeHnS} mines with extreme health and safety impacts";
+        amContent += "<br /> ${AMLimpact_HealthSafety} mines with health and safety impacts";
+        amContent += "<br /> ${AMLimpact_NoPriority} mines with impacts yet to be prioritized";
+        amContent += "<br /> ${AMLimpact_NoDeterm} mines with impacts yet to be determined";
+      var template = new InfoTemplate();
+        template.setTitle("<b>${COUNTY_NAM} County</b>");
+        template.setContent(amContent);
+
+      var dynamicUrl = "http://mapmaker2.millersville.edu/ArcGIS/rest/services/PA_AcidMines_f2013/MapServer";
+      var dynamicOptions = {
+        "id": "dynamic",
+        "imageParameters": imageParameters,
+        "showAttribution": false,
+        "opacity": 0.6
+      };
+      dynamic = new DynamicLayer(dynamicUrl, dynamicOptions);
+      dynamic.setInfoTemplates({
+        1: { infoTemplate: template }
+      });
+      map.addLayer(dynamic);
+
+        map.infoWindow.resize(320, 160);
+      });
+  </script>
+</head>
+
+<body>
+  <h1>Impacts of Abandoned Mines in Pennsylvania</h1> 
+
+  <div>
+    <ul id="navList">
+      <li id="linkLegend"><a href="#legend">Legend</a></li>
+ 	    <li id="linkData"><a href="#defs">Data Explanation</a></li>
+      <li id="linkCredits"><a href="#credits">Credits</a></li>
+      <li id="linkBack"><a href="../index.html">PA Maps</a></li>
+    </ul>
+  </div>
+
+  <div id="instruct">
+    <p>The map shows how abandoned mine sites are distributed throughout the state, and categorizes the sites by their types
+      of impacts. This lets a viewer observe where sites with different kinds of threats are found, and also makes it easy to locate
+      non-affected areas.</p>
+    <p>Click on a county to see the categories and numbers of sites located there.  Zoom in to see more precise locations.</p>
+  </div>
+
+  <div id="container">
+    <div id="dummy"> </div>
+    <div id="mapDiv"> </div>
+  </div>
+
+  <div id="legend">
+    <img id="left" src="amlLegendSites.png" alt="Map Legend: Types of Abandoned Mine Sites" />
+    <img id="right" src="amlLegendCounties.png" alt="Map Legend: Density of AML Sites in Each County" />
+  </div>
+
+  <div id="defs">
+    <h2>Definition</h2>
+    <p>
+      "The Bureau of Abandoned Mine Reclamation administers and oversees the Abandoned Mine Reclamation Program in Pennsylvania. 
+      The bureau is responsible for resolving problems such as mine fires, mine subsidence, dangerous highwalls, open shafts and 
+      portals, mining-impacted water supplies and other hazards which have resulted from past coal mining (pre-1977) practices in 
+      accordance with requirements established by the federal Office of Surface Mining under authority of the Surface Mining Control 
+      and Reclamation Act." (PA DEP: source link below)
+    </p>
+    <p>
+      One of the most challenging impacts of abandoned mines is water pollution due to Acid Mine Drainage (AMD).  AMD is when liquid 
+      from any type of coal site drains from that site and gives water a more acidic pH. These situations can threaten aquatic and terrestrial 
+      wildlife as well as human populations due to the contamination of their drinking water. Of the 11,249 abandoned mines in the 
+      state of Pennsylvania, 9,977 have either environmental impacts or health and safety issues.
+    </p>
+
+    <h2>Comparative Data:</h2>
+    <table id="tblStyle">
+      <tr>
+        <th>Impact Type</th>
+        <th># of Mines</th>
+      </tr>
+      <tr>
+        <td>Environmental</td>
+        <td>6,651</td>
+      </tr>
+      <tr>
+        <td>Extreme Health &amp; Safety</td>
+        <td>140</td>
+      </tr>
+      <tr>
+        <td>Health &amp; Safety</td>
+        <td>3,276</td>
+      </tr>
+      <tr>
+        <td>No Priority</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>No Determination</td>
+        <td>1,266</td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="credits">
+    <h2>Credits</h2>
+    <div id="links">
+      <h3>Data sources:</h3>
+      <p>Abandoned Mine Land Inventory Points (2013): &nbsp; 
+        <a href="http://www.portal.state.pa.us/portal/server.pt/community/abandoned_mine_reclamation/13961">
+          PA Department of Environmental Protection (PA DEP)</a>.</p>
+      <p>Mine locations: &nbsp; <a href="http://www.pasda.psu.edu">PA Spatial Data Access</a>.</p>
+      <p>GIS capabilities: &nbsp; <a href="http://www.esri.com">Esri, Inc.</a></p><br />
+      <p>Map and webpage created by: &nbsp; Amber McCann, Tom Hennessy, Alex Huber; Fall 2013.</p>
+      <p>Modifications by: &nbsp; <a href="mailto:cgeiger@millersville.edu">Dr. Geiger</a>, 2016.</p>
+    </div>
+  </div>
+</body>
+</html>
